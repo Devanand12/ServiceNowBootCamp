@@ -1,1 +1,159 @@
 
+package pages;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+
+import com.testleaf.selenium.api.base.SeleniumBase;
+import com.testleaf.selenium.pages.MyWorkPage;
+
+import cucumber.api.java.en.Given;
+
+public class HomePagePF extends SeleniumBase {
+
+	public HomePagePF() {
+		PageFactory.initElements(getDriver(), this);
+	}
+	
+	@FindBy(how=How.XPATH,using="//input[@placeholder='Filter navigator']") 
+	private WebElement eleFiltername;
+	
+	public HomePagePF enterFilterSearch(String filtername) throws InterruptedException {
+		Thread.sleep(2000);
+		clearAndType(eleFiltername, "My Work");
+		return this;		
+	}
+	
+	@Given("Go To My Work (.*)")
+	public HomePagePF GoToMyWork(String filtername) throws InterruptedException
+	{
+		enterFilterSearch(filtername);
+		clickMyWork();
+		return this;
+	}
+	
+	@FindBy(how=How.XPATH, using="(//div[text()='My Work'])[1]")
+	private WebElement eleClickMyWork;
+	
+	public MyWorkPage clickMyWork() {
+		click(eleClickMyWork);
+		defaultContent();
+		return new MyWorkPage();		
+	}
+}
+
+package pages;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+
+import com.testleaf.testng.api.base.ProjectSpecificMethods;
+
+public class LoginPagePF extends ProjectSpecificMethods {
+
+	public LoginPagePF() {
+
+		PageFactory.initElements(getDriver(), this);
+		switchToFrame("gsft_main");
+	}
+	
+	@FindBy(how=How.ID,using="user_name") 
+	private WebElement eleUsername;
+	
+	public LoginPagePF enterUserName(String username) {
+		clearAndType(eleUsername, "admin");
+		return this;
+
+
+	}
+	@FindBy(how=How.ID,using="user_password") 
+	private WebElement elePassword;
+	
+	public LoginPagePF enterpassword (String password) {
+		clearAndType(elePassword, "India@123");
+		defaultContent();
+		return this;
+
+	}
+	@FindBy(how=How.XPATH,using="//button[contains(@class,'pull-right btn')]") 
+	private WebElement eleLoginButton;
+	
+	public HomePagePF clickLoginButton() {
+		click(eleLoginButton);
+		System.out.println("Login Successfully");
+		return new HomePagePF() ;
+
+	}
+
+}
+
+package pages;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+
+import com.testleaf.selenium.api.base.SeleniumBase;
+
+public class MyWorkPagePF extends SeleniumBase {
+
+	public MyWorkPagePF() {
+		PageFactory.initElements(getDriver(), this);
+		switchToFrame("gsft_main");
+	}
+	
+	@FindBy(how=How.XPATH, using="//button[text()='New']")
+	private WebElement eleClickNew;
+	
+	public TaskPagePF clickNew() {
+		
+		click(eleClickNew);
+		defaultContent();
+		return new TaskPagePF();		
+	}
+	
+	@FindBy(how =How.XPATH, using="(//tr[@data-list_id='task']//td)[3]")
+	private WebElement eleResultChatEntryNumber;
+	public MyWorkPagePF verifyChatEntryCreation(String chatEntryNumber) {
+		System.out.println(verifyPartialText(eleResultChatEntryNumber, chatEntryNumber)?
+				"Chat entry created successfully":"Chat entry failed to create");
+		return this;	
+
+	}
+}
+package pages;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+
+import com.testleaf.selenium.api.base.SeleniumBase;
+import com.testleaf.selenium.pages.CreateChatQueryPage;
+
+public class TaskPagePF extends SeleniumBase{
+
+	public TaskPagePF() {
+		PageFactory.initElements(getDriver(), this);
+		switchToFrame("gsft_main");
+	}
+	
+	@FindBy(how=How.LINK_TEXT, using="Chat_queue_entry")
+	private WebElement eleClickMyChat;
+	
+	public CreateChatQueryPage ClickChatQuery() {
+		click(eleClickMyChat);
+		return new CreateChatQueryPage();		
+	}
+}
+
+package pages;
+
+public class UpdateChatQueryPF {
+
+}
