@@ -1,0 +1,42 @@
+package com.testleaf.selenium.api.base;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import cucumber.api.testng.AbstractTestNGCucumberTests;
+
+public class DriverInstance  extends AbstractTestNGCucumberTests{
+
+	private static final ThreadLocal<RemoteWebDriver> remoteWebdriver = new ThreadLocal<RemoteWebDriver>();
+	private static final ThreadLocal<WebDriverWait> wait = new  ThreadLocal<WebDriverWait>();
+
+	public void setWait() {
+		wait.set(new WebDriverWait(getDriver(), 30));
+	}
+
+	public WebDriverWait getWait() {
+		return wait.get();
+	}
+
+	public void setDriver(String browser) {		
+		switch (browser) {
+		case "chrome":
+			remoteWebdriver.set(new ChromeDriver());
+			break;
+		case "firefox":
+			remoteWebdriver.set(new FirefoxDriver());
+			break;
+		case "internet explorer":
+			remoteWebdriver.set(new InternetExplorerDriver());
+		default:
+			break;
+		}
+	}
+	public RemoteWebDriver getDriver() {
+		return remoteWebdriver.get();
+	}
+
+}
